@@ -8,9 +8,11 @@ def add(index,word):
     index[word]=0
 
 def count(index,sentence):
+    totalcount=0
     word=""
     for i in sentence:
         if word !="" and (i==" " or i=="," or i=="."):
+            totalcount +=1
             for j in index:
                 if word == j:
                     index[j]+=1
@@ -19,8 +21,10 @@ def count(index,sentence):
             continue
         else:
             word+=i
+    return totalcount
 
-def show(index):
+
+def show(index,totalcount):
     totalcount=0
     print("words count:",end="[")
     for w in index:
@@ -31,7 +35,7 @@ def show(index):
         totalcount +=index[g]
     for x in index:
         if index[x]!=0:
-            print(x,":",math.log(1+totalcount/index[x])," ",end="")
+            print(x,":",index[x]/totalcount*math.log(1+totalcount/index[x])," ",end="")
         else:
             print(x, ":", 0, " ", end="")
     print("]\n")
@@ -55,12 +59,15 @@ def elementadd(index):
 
 def sentencecount(index):
     signal = 0
+    totalcount = 0
     while signal != 1:
         sentence = str(input("input sentence:"))
-        count(index,sentence)
+        totalcount+=count(index,sentence)
         signal = int(input("input 1 to stop. input 0 to continue:"))
 
 data=initialize()
 elementadd(data)
-sentencecount(data)
-show(data)
+num=sentencecount(data)
+show(data,num)
+
+
